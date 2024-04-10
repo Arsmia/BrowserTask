@@ -2,39 +2,49 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 
 namespace BrowserTask;
-
-public class DemantSiteTests
+public class DemantSiteTests : IDisposable
 {
-
+    IWebDriver driver;
+    public DemantSiteTests()
+    {
+        var firefoxDriver = new FirefoxDriver();
+        firefoxDriver.Manage().Window.Maximize();
+        firefoxDriver.Url = "https://www.demant.com/";
+        this.driver = firefoxDriver;
+    }
+    public void Dispose()
+    {
+        driver.Dispose();
+    }
     [Fact]
-
- private static void GetFirstPage()
+ public void CorrectPageIsOpen()
      {
-         IWebDriver driver = new FirefoxDriver();
-         string expectedHeader = "News and media";
+         //Arrange
+         const string expectedHeader = "Latest news";
+         const string title = "Executive Board and Board of Directors";
+         var searchResultPage = new SearchResultPage(driver);
+         var foundPage = new FoundPage(driver);
+         var managementGovernancePage = new ManagementGovernancePage(driver);
          
-         //Arrange():
-         new FirstPage(driver).OpenFirstPage()
+         new MainPage(driver)
+             .OpenFirstPage()
              .ClosePopUp()
              .OpenAboutMenu()
              .OpenManagementAndGovernancePage();
-
-         //Act();
-         new ManagementGovernancePage(driver).ChooseManagementGovernanceTitle()
-
-             //Assert();
-             .CheckTitleOnPage()
-
-             //Act():
-             .ClickOnSearch()
+         
+         //Act
+         new ManagementGovernancePage(driver).ChooseManagementGovernanceTitle();
+         
+             //Assert
+             Assert.Equal(title, managementGovernancePage.CheckTitleOnPage());
+         
+             //Act
+             new ManagementGovernancePage(driver).ClickOnSearch()
              .EnterTextInSearchLine(expectedHeader);
-
-         new SearchResultPage(driver).SearchUrlClick();
-
-         new FoundPage(driver).FoundPageResult()
-             
-             //Assert();
-             .CheckHeaderOnPage(expectedHeader);
-
+         
+         searchResultPage.SearchUrlClick();
+         
+             //Assert
+             Assert.Equal(expectedHeader, foundPage.GetPageResult());
      }
 }
