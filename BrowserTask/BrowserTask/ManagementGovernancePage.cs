@@ -16,7 +16,6 @@ public class ManagementGovernancePage
     }
     public ManagementGovernancePage ChooseManagementGovernanceTitle()
     {
-        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(1000);
         _title = (WebElement)driver.FindElement(_webElement);
         _title.Click();
         
