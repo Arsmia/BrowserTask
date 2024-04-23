@@ -2,19 +2,13 @@
 
 namespace BrowserTask;
 
-public class SearchResultPage
+public class SearchResultPage(IWebDriver driver)
 {
-    IWebDriver driver;
-    internal IWebElement SearchResult => driver.FindElement(By.CssSelector("li[data-number='1'] a[class='search-url']"));
+    private IWebElement SearchResult => driver.FindElement(By.CssSelector("li[data-number='1'] a[class='search-url']"));
 
-    public SearchResultPage(IWebDriver driver)
-    {
-        this.driver = driver;
-    }
-    public SearchResultPage SearchUrlClick()
+    public FoundPage SearchUrlClick()
     {
         SearchResult.Click();
-        
-        return this;
+        return new FoundPage(driver);
     }
 }

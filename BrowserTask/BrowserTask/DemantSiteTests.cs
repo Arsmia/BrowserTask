@@ -2,49 +2,51 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 
 namespace BrowserTask;
+
 public class DemantSiteTests : IDisposable
 {
-    IWebDriver driver;
+    private IWebDriver _driver;
+
     public DemantSiteTests()
     {
         var firefoxDriver = new FirefoxDriver();
         firefoxDriver.Manage().Window.Maximize();
-        firefoxDriver.Url = "https://www.demant.com/";
-        this.driver = firefoxDriver;
+        _driver = firefoxDriver;
+        _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(5000);
     }
+
     public void Dispose()
     {
-        driver.Dispose();
+        _driver.Dispose();
     }
+
     [Fact]
- public void CorrectPageIsOpen()
-     {
-         //Arrange
-         const string expectedHeader = "Latest news";
-         const string title = "Executive Board and Board of Directors";
-         var searchResultPage = new SearchResultPage(driver);
-         var foundPage = new FoundPage(driver);
-         var managementGovernancePage = new ManagementGovernancePage(driver);
-         
-         new MainPage(driver)
-             .OpenFirstPage()
-             .ClosePopUp()
-             .OpenAboutMenu()
-             .OpenManagementAndGovernancePage();
-         
-         //Act
-         new ManagementGovernancePage(driver).ChooseManagementGovernanceTitle();
-         
-             //Assert
-             Assert.Equal(title, managementGovernancePage.CheckTitleOnPage());
-         
-             //Act
-             new ManagementGovernancePage(driver).ClickOnSearch()
-             .EnterTextInSearchLine(expectedHeader);
-         
-         searchResultPage.SearchUrlClick();
-         
-             //Assert
-             Assert.Equal(expectedHeader, foundPage.GetPageResult());
-     }
+    public void LatestNewsPageIsOpen()
+    {
+        //Arrange
+        const string title = "Executive Board and Board of Directors";
+        var managementGovernancePage = new MainPage(_driver)
+            .OpenFirstPage()
+            .ClosePopUp()
+            .OpenAboutMenu()
+            .OpenManagementAndGovernancePage()
+
+            //Act
+            .ChooseManagementGovernanceTitle();
+
+        //Assert
+        Assert.Equal(title, managementGovernancePage.CheckTitleOnPage());
+
+        //Arrange
+        const string expectedHeader = "Latest news";
+        var foundPage = new ManagementGovernancePage(_driver)
+            .ClickOnSearch()
+            .EnterTextInSearchLine(expectedHeader)
+
+            //Act
+            .SearchUrlClick();
+
+        //Assert
+        Assert.Equal(expectedHeader, foundPage.GetPageResult());
+    }
 }
