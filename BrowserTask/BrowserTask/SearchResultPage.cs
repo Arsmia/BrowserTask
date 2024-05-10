@@ -9,6 +9,7 @@ public class SearchResultPage(IWebDriver driver)
     public FoundPage SearchUrlClick()
     {
         SearchResult.Click();
-        return new FoundPage(driver);
+
+        return new(driver);
     }
 }

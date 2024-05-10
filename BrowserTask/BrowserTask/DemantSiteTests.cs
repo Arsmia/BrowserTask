@@ -5,27 +5,25 @@ namespace BrowserTask;
 
 public class DemantSiteTests : IDisposable
 {
-    private IWebDriver _driver;
+    private readonly IWebDriver driver;
 
     public DemantSiteTests()
     {
-        var firefoxDriver = new FirefoxDriver();
-        firefoxDriver.Manage().Window.Maximize();
-        _driver = firefoxDriver;
-        _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(5000);
+        driver = new FirefoxDriver();
+        driver.Manage().Window.Maximize();
+        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(5000);
     }
 
     public void Dispose()
     {
-        _driver.Dispose();
+        driver.Dispose();
     }
 
     [Fact]
     public void LatestNewsPageIsOpen()
     {
         //Arrange
-        const string title = "Executive Board and Board of Directors";
-        var managementGovernancePage = new MainPage(_driver)
+        var managementGovernancePage = new MainPage(driver)
             .OpenFirstPage()
             .ClosePopUp()
             .OpenAboutMenu()
@@ -35,18 +33,20 @@ public class DemantSiteTests : IDisposable
             .ChooseManagementGovernanceTitle();
 
         //Assert
+        const string title = "Executive Board and Board of Directors";
         Assert.Equal(title, managementGovernancePage.CheckTitleOnPage());
 
         //Arrange
         const string expectedHeader = "Latest news";
-        var foundPage = new ManagementGovernancePage(_driver)
-            .ClickOnSearch()
+
+        var actualResult = managementGovernancePage.ClickOnSearch()
             .EnterTextInSearchLine(expectedHeader)
 
             //Act
-            .SearchUrlClick();
+            .SearchUrlClick()
+            .GetPageResult();
 
         //Assert
-        Assert.Equal(expectedHeader, foundPage.GetPageResult());
+        Assert.Equal(expectedHeader, actualResult);
     }
 }
