@@ -6,7 +6,7 @@ public class SearchResultPage(IWebDriver driver)
 {
     private IWebElement SearchResult => driver.FindElement(By.CssSelector("li[data-number='1'] a[class='search-url']"));
 
-    public FoundPage SearchUrlClick()
+    public FoundPage UrlClick()
     {
         SearchResult.Click();
 

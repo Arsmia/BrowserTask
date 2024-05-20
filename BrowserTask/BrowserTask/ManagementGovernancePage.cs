@@ -4,20 +4,21 @@ namespace BrowserTask;
 
 public class ManagementGovernancePage(IWebDriver driver)
 {
-    private IWebElement WebElement => driver.FindElement(By.CssSelector(".like-h1-xl-light"));
+    private IWebElement ExpectedTitle => driver.FindElement(By.CssSelector(".like-h1-xl-light"));
+
     private IWebElement SearchElement => driver.FindElement(By.ClassName("search"));
 
-    private IWebElement InputElement =>
+    private IWebElement SearchInput =>
         driver.FindElement(By.ClassName("search-field")).FindElement(By.TagName("input"));
 
     public ManagementGovernancePage ChooseManagementGovernanceTitle()
     {
-        WebElement.Click();
+        ExpectedTitle.Click();
 
         return this;
     }
 
-    public string CheckTitleOnPage() => WebElement.Text;
+    public IWebElement GetExpectedTitle() => ExpectedTitle;
 
     public ManagementGovernancePage ClickOnSearch()
     {
@@ -26,10 +27,10 @@ public class ManagementGovernancePage(IWebDriver driver)
         return this;
     }
 
-    public SearchResultPage EnterTextInSearchLine(string input)
+    public SearchResultPage TriggerSearchOnWebSiteLine(string input)
     {
-        InputElement.SendKeys(input);
-        InputElement.SendKeys(Keys.Enter);
+        SearchInput.SendKeys(input);
+        SearchInput.SendKeys(Keys.Enter);
 
         return new(driver);
     }
