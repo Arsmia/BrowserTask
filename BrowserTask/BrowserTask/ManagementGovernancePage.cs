@@ -4,32 +4,35 @@ namespace BrowserTask;
 
 public class ManagementGovernancePage(IWebDriver driver)
 {
-    private IWebElement ExpectedTitle => driver.FindElement(By.CssSelector(".like-h1-xl-light"));
+    public IWebElement Title => driver.FindElement(By.CssSelector(".like-h1-xl-light"));
 
-    private IWebElement SearchElement => driver.FindElement(By.ClassName("search"));
+    private IWebElement SearchIcon => driver.FindElement(By.ClassName("search"));
 
-    private IWebElement SearchInput =>
-        driver.FindElement(By.ClassName("search-field")).FindElement(By.TagName("input"));
+    private IWebElement SearchInput => driver.FindElement(By.ClassName("search-field")).FindElement(By.TagName("input"));
 
-    public ManagementGovernancePage ChooseManagementGovernanceTitle()
+    public ManagementGovernancePage ClickManagementGovernanceTitle()
     {
-        ExpectedTitle.Click();
+        Title.Click();
 
         return this;
     }
 
-    public IWebElement GetExpectedTitle() => ExpectedTitle;
-
-    public ManagementGovernancePage ClickOnSearch()
+    public ManagementGovernancePage ClickOnSearchIcon()
     {
-        SearchElement.Click();
+        SearchIcon.Click();
 
         return this;
     }
 
-    public SearchResultPage TriggerSearchOnWebSiteLine(string input)
+    public ManagementGovernancePage EnterSearchPhrase(string input)
     {
         SearchInput.SendKeys(input);
+
+        return this;
+    }
+
+    public SearchResultPage TriggerSearch()
+    {
         SearchInput.SendKeys(Keys.Enter);
 
         return new(driver);

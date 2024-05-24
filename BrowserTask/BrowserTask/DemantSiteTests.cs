@@ -1,4 +1,5 @@
 using OpenQA.Selenium;
+using OpenQA.Selenium.DevTools.V85.CacheStorage;
 using OpenQA.Selenium.Firefox;
 
 namespace BrowserTask;
@@ -30,24 +31,24 @@ public class DemantSiteTests : IDisposable
             .OpenManagementAndGovernancePage()
 
             //Act
-            .ChooseManagementGovernanceTitle();
+            .ClickManagementGovernanceTitle();
 
         //Assert
         const string title = "Executive Board and Board of Directors";
-        Assert.Equal(title, managementGovernancePage.GetExpectedTitle().Text);
+        Assert.Equal(title, managementGovernancePage.Title.Text);
 
         //Arrange
         const string expectedHeader = "Latest news";
 
         var actualResult = managementGovernancePage
-            .ClickOnSearch()
-            .TriggerSearchOnWebSiteLine(expectedHeader)
-            .UrlClick()
+            .ClickOnSearchIcon()
+            .EnterSearchPhrase(expectedHeader)
+            .TriggerSearch()
 
             //Act
-            .GetHeader();
+            .ClickRelevantLinkResult();
 
         //Assert
-        Assert.Equal(expectedHeader, actualResult.Text);
+        Assert.Equal(expectedHeader, actualResult.Header.Text);
     }
-}
+} 
