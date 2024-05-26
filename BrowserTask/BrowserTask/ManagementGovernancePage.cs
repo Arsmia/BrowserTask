@@ -17,7 +17,7 @@ public class ManagementGovernancePage(IWebDriver driver)
         return this;
     }
 
-    public ManagementGovernancePage ClickOnSearchIcon()
+    public ManagementGovernancePage ClickSearchIcon()
     {
         SearchIcon.Click();
 

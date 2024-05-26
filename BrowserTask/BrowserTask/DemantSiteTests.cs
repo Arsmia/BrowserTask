@@ -1,5 +1,4 @@
 using OpenQA.Selenium;
-using OpenQA.Selenium.DevTools.V85.CacheStorage;
 using OpenQA.Selenium.Firefox;
 
 namespace BrowserTask;
@@ -41,14 +40,14 @@ public class DemantSiteTests : IDisposable
         const string expectedHeader = "Latest news";
 
         var actualResult = managementGovernancePage
-            .ClickOnSearchIcon()
+            .ClickSearchIcon()
             .EnterSearchPhrase(expectedHeader)
             .TriggerSearch()
 
             //Act
-            .ClickRelevantLinkResult();
+            .ClickFirstElementOfTheList();
 
         //Assert
         Assert.Equal(expectedHeader, actualResult.Header.Text);
     }
-} 
+}
