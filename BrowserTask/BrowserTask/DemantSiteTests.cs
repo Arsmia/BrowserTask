@@ -1,5 +1,6 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
+using Xunit.Abstractions;
 
 namespace BrowserTask;
 
@@ -37,17 +38,21 @@ public class DemantSiteTests : IDisposable
         Assert.Equal(title, managementGovernancePage.Title.Text);
 
         //Arrange
-        const string expectedHeader = "Latest news";
-
-        var actualResult = managementGovernancePage
+        const string searchText = "News and media";
+        const string expectedHeader = "Oticon releases new premium hearing aids Oticon Real TM";
+        
+        var expectedLink = managementGovernancePage
             .ClickSearchIcon()
-            .EnterSearchPhrase(expectedHeader)
+            .EnterSearchPhrase(searchText)
             .TriggerSearch()
+            .NotFirstElementOfTheList.GetAttribute("href");
 
-            //Act
-            .ClickFirstElementOfTheList();
+        //Act
+        var actualResult = new SearchResultPage(_driver)
+            .ClickNotFirstElementOfTheList();
 
         //Assert
+        Assert.Equal(expectedLink, _driver.Url );
         Assert.Equal(expectedHeader, actualResult.Header.Text);
     }
 }

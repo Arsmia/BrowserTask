@@ -4,12 +4,13 @@ namespace BrowserTask;
 
 public class SearchResultPage(IWebDriver driver)
 {
-    private IWebElement FirstElementOfTheList => driver.FindElement(By.CssSelector("li[data-number='1'] a[class='search-url']"));
-
-    public FoundPage ClickFirstElementOfTheList()
+    public IWebElement NotFirstElementOfTheList => driver.FindElement(By.CssSelector("li[data-number='3']>h3>a"));
+    
+    public FoundPage ClickNotFirstElementOfTheList()
     {
-        FirstElementOfTheList.Click();
+        NotFirstElementOfTheList.Click();
 
         return new(driver);
     }
+    
 }
