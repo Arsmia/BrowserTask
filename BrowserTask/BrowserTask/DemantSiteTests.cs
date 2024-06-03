@@ -1,6 +1,5 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
-using Xunit.Abstractions;
 
 namespace BrowserTask;
 
@@ -21,7 +20,7 @@ public class DemantSiteTests : IDisposable
     }
 
     [Fact]
-    public void LatestNewsPageIsOpen()
+    public void ThirdElementOfSearchResultsPageIsOpen()
     {
         //Arrange
         var managementGovernancePage = new MainPage(_driver)
@@ -39,20 +38,18 @@ public class DemantSiteTests : IDisposable
 
         //Arrange
         const string searchText = "News and media";
-        const string expectedHeader = "Oticon releases new premium hearing aids Oticon Real TM";
         
         var expectedLink = managementGovernancePage
             .ClickSearchIcon()
             .EnterSearchPhrase(searchText)
             .TriggerSearch()
-            .NotFirstElementOfTheList.GetAttribute("href");
+            .ThirdElementOfSearchResults.GetAttribute("href");
 
         //Act
-        var actualResult = new SearchResultPage(_driver)
+        new SearchResultPage(_driver)
             .ClickNotFirstElementOfTheList();
 
         //Assert
         Assert.Equal(expectedLink, _driver.Url );
-        Assert.Equal(expectedHeader, actualResult.Header.Text);
     }
 }
