@@ -38,18 +38,18 @@ public class DemantSiteTests : IDisposable
 
         //Arrange
         const string searchText = "News and media";
-        
-        var expectedLink = managementGovernancePage
+        var searchResultPage = managementGovernancePage
             .ClickSearchIcon()
             .EnterSearchPhrase(searchText)
-            .TriggerSearch()
+            .TriggerSearch();
+            
+        var expectedLink = searchResultPage
             .ThirdElementOfSearchResults.GetAttribute("href");
-
+            
         //Act
-        new SearchResultPage(_driver)
-            .ClickNotFirstElementOfTheList();
+            searchResultPage.ClickNotFirstElementOfTheList();
 
         //Assert
-        Assert.Equal(expectedLink, _driver.Url );
+        Assert.Equal(expectedLink, _driver.Url);
     }
 }
