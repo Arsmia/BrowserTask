@@ -2,11 +2,9 @@
 
 namespace BrowserTask;
 
-public class SearchResultPage(IWebDriver driver)
+internal class SearchResultPage(IWebDriver driver)
 {
-    public IWebElement ThirdElementOfSearchResults => driver.FindElement(By.CssSelector("li[data-number='3']>h3>a"));
-    public void ClickNotFirstElementOfTheList()
-    {
-        ThirdElementOfSearchResults.Click();
-    }
+    internal IWebElement LinkOfThirdElementOfSearchResults => driver.FindElement(By.CssSelector("li[data-number='3']>h3>a"));
+
+    internal void ClickNotFirstElementOfTheList() => LinkOfThirdElementOfSearchResults.Click();
 }

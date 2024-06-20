@@ -37,17 +37,17 @@ public class DemantSiteTests : IDisposable
         Assert.Equal(title, managementGovernancePage.Title.Text);
 
         //Arrange
-        const string searchText = "News and media"; 
+        const string searchText = "News and media";
         var searchResultPage = managementGovernancePage
             .ClickSearchIcon()
             .EnterSearchPhrase(searchText)
             .TriggerSearch();
-            
+
         var expectedLink = searchResultPage
-            .ThirdElementOfSearchResults.GetAttribute("href");
-            
+            .LinkOfThirdElementOfSearchResults.GetAttribute("href");
+
         //Act
-            searchResultPage.ClickNotFirstElementOfTheList();
+        searchResultPage.ClickNotFirstElementOfTheList();
 
         //Assert
         Assert.Equal(expectedLink, _driver.Url);
